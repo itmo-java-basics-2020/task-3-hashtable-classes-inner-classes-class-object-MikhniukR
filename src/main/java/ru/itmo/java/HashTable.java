@@ -1,9 +1,10 @@
 package ru.itmo.java;
 
 public class HashTable {
-    private final float DEFAULT_LOAD_FACTOR = 0.5f;
-    private final float DEFAULT_CLEAN_FACTOR = 0.8f;
-    private final int DEFAULT_INITIAL_SIZE = 1024;
+    private final float LOAD_FACTOR = 0.5f;
+    private final float CLEAN_FACTOR = 0.8f;
+    private final int INITIAL_SIZE = 1024;
+    private final int RESIZE_MULTIPLY = 2;
 
     private final float loadFactor;
     private Entry[] data;
@@ -16,13 +17,13 @@ public class HashTable {
     }
 
     HashTable(int initialSize) {
-        loadFactor = DEFAULT_LOAD_FACTOR;
+        loadFactor = LOAD_FACTOR;
         data = new Entry[initialSize];
     }
 
     HashTable() {
-        loadFactor = DEFAULT_LOAD_FACTOR;
-        data = new Entry[DEFAULT_INITIAL_SIZE];
+        loadFactor = LOAD_FACTOR;
+        data = new Entry[INITIAL_SIZE];
     }
 
     Object put(Object key, Object value) {
@@ -44,11 +45,11 @@ public class HashTable {
         realSize++;
         size++;
 
-        if(data.length * DEFAULT_CLEAN_FACTOR < realSize) {
+        if(data.length * CLEAN_FACTOR < realSize) {
             resize(1);
         }
         if(data.length * loadFactor < size) {
-            resize(2);
+            resize(RESIZE_MULTIPLY);
         }
         return null;
     }
