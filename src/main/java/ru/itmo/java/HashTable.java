@@ -45,11 +45,11 @@ public class HashTable {
         realSize++;
         size++;
 
-        if(data.length * CLEAN_FACTOR < realSize) {
-            resize(1);
-        }
         if(data.length * loadFactor < size) {
             resize(RESIZE_MULTIPLY);
+        }
+        if(data.length * CLEAN_FACTOR < realSize) {
+            resize(1);
         }
         return null;
     }
