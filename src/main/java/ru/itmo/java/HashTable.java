@@ -5,6 +5,7 @@ public class HashTable {
     private final float CLEAN_FACTOR = 0.8f;
     private final int INITIAL_SIZE = 1024;
     private final int RESIZE_MULTIPLY = 2;
+    private final int MAX_INITIAL_SIZE = 1_000_000;
 
     private final float loadFactor;
     private Entry[] data;
@@ -12,11 +13,20 @@ public class HashTable {
     private int realSize = 0;
 
     HashTable(int initialSize, float loadFactor) {
+        if(initialSize <= 0 || initialSize > MAX_INITIAL_SIZE) {
+            throw new IllegalArgumentException("Initial size should be 0 < initialSize < " + MAX_INITIAL_SIZE);
+        }
+        if(loadFactor <= 0 || loadFactor > 1) {
+            throw new IllegalArgumentException("Load factor should be 0 < loadFactor <= 1");
+        }
         this.loadFactor = loadFactor;
         data = new Entry[initialSize];
     }
 
     HashTable(int initialSize) {
+        if(initialSize <= 0 || initialSize > MAX_INITIAL_SIZE) {
+            throw new IllegalArgumentException("Initial size should be 0 < initialSize < " + MAX_INITIAL_SIZE);
+        }
         loadFactor = LOAD_FACTOR;
         data = new Entry[initialSize];
     }
