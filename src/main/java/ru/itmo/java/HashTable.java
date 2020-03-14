@@ -6,6 +6,7 @@ public class HashTable {
     private final int INITIAL_SIZE = 1024;
     private final int RESIZE_MULTIPLY = 2;
     private final int MAX_INITIAL_SIZE = 1_000_000;
+    private final int STEP = 1009;
 
     private final float loadFactor;
     private Entry[] data;
@@ -45,10 +46,7 @@ public class HashTable {
                 return tmp;
             }
 
-            hash++;
-            if(hash == data.length) {
-                hash = 0;
-            }
+            hash = nextHash(hash);
         }
 
         data[hash] = new Entry(key, value);
@@ -71,10 +69,7 @@ public class HashTable {
                 return data[hash].value;
             }
 
-            hash++;
-            if(hash == data.length) {
-                hash = 0;
-            }
+            hash = nextHash(hash);
         }
 
         return null;
@@ -91,10 +86,7 @@ public class HashTable {
                 return tmp;
             }
 
-            hash++;
-            if(hash == data.length) {
-                hash = 0;
-            }
+            hash = nextHash(hash);
         }
 
         return null;
@@ -123,6 +115,10 @@ public class HashTable {
                 put(entry.key, entry.value);
             }
         }
+    }
+
+    private int nextHash(int hash) {
+        return (hash + STEP) % data.length;
     }
 
     private class Entry {
