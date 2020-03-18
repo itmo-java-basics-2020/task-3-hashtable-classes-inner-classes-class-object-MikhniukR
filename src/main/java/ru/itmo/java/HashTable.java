@@ -7,6 +7,7 @@ public class HashTable {
     private static final int RESIZE_MULTIPLY = 2;
     private static final int MAX_INITIAL_SIZE = 1_000_000;
     private static final int STEP = 1009;
+    private static final Entry DELETED = new Entry(null, null);
 
     private final float loadFactor;
     private Entry[] data;
@@ -80,8 +81,7 @@ public class HashTable {
         while(data[hash] != null) {
             if(key.equals(data[hash].key)) {
                 Object tmp = data[hash].value;
-                data[hash].key = null;
-                data[hash].value = null;
+                data[hash] = DELETED;
                 size--;
                 return tmp;
             }
@@ -121,7 +121,7 @@ public class HashTable {
         return (hash + STEP) % data.length;
     }
 
-    private class Entry {
+    private static class Entry {
         private Object key;
         private Object value;
 
