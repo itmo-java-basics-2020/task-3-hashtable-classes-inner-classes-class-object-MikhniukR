@@ -1,12 +1,12 @@
 package ru.itmo.java;
 
 public class HashTable {
-    private final float LOAD_FACTOR = 0.5f;
-    private final float CLEAN_FACTOR = 0.8f;
-    private final int INITIAL_SIZE = 1024;
-    private final int RESIZE_MULTIPLY = 2;
-    private final int MAX_INITIAL_SIZE = 1_000_000;
-    private final int STEP = 1009;
+    private static final float LOAD_FACTOR = 0.5f;
+    private static final float CLEAN_FACTOR = 0.8f;
+    private static final int INITIAL_SIZE = 1024;
+    private static final int RESIZE_MULTIPLY = 2;
+    private static final int MAX_INITIAL_SIZE = 1_000_000;
+    private static final int STEP = 1009;
 
     private final float loadFactor;
     private Entry[] data;
