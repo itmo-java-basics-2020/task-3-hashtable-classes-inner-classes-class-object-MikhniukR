@@ -25,16 +25,20 @@ public class HashTable {
     }
 
     HashTable(int initialSize) {
-        if(initialSize <= 0 || initialSize > MAX_INITIAL_SIZE) {
-            throw new IllegalArgumentException("Initial size should be 0 < initialSize < " + MAX_INITIAL_SIZE);
-        }
-        loadFactor = LOAD_FACTOR;
-        data = new Entry[initialSize];
+        this(initialSize, LOAD_FACTOR);
     }
 
     HashTable() {
-        loadFactor = LOAD_FACTOR;
-        data = new Entry[INITIAL_SIZE];
+        this(INITIAL_SIZE, LOAD_FACTOR);
+    }
+
+    private void checkFullness() {
+        if(data.length * loadFactor < size) {
+            resize(RESIZE_MULTIPLY);
+        }
+        if(data.length * CLEAN_FACTOR < realSize && CLEAN_FACTOR > loadFactor) {
+            resize(1);
+        }
     }
 
     Object put(Object key, Object value) {
@@ -53,12 +57,8 @@ public class HashTable {
         realSize++;
         size++;
 
-        if(data.length * loadFactor < size) {
-            resize(RESIZE_MULTIPLY);
-        }
-        if(data.length * CLEAN_FACTOR < realSize && CLEAN_FACTOR > loadFactor) {
-            resize(1);
-        }
+        checkFullness();
+
         return null;
     }
 
@@ -122,7 +122,8 @@ public class HashTable {
     }
 
     private class Entry {
-        private Object key, value;
+        private Object key;
+        private Object value;
 
         public Entry(Object key, Object value) {
             this.key = key;
