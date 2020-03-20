@@ -15,10 +15,10 @@ public class HashTable {
     private int realSize = 0;
 
     HashTable(int initialSize, float loadFactor) {
-        if(initialSize <= 0 || initialSize > MAX_INITIAL_SIZE) {
+        if (initialSize <= 0 || initialSize > MAX_INITIAL_SIZE) {
             throw new IllegalArgumentException("Initial size should be 0 < initialSize < " + MAX_INITIAL_SIZE);
         }
-        if(loadFactor <= 0 || loadFactor > 1) {
+        if (loadFactor <= 0 || loadFactor > 1) {
             throw new IllegalArgumentException("Load factor should be 0 < loadFactor <= 1");
         }
         this.loadFactor = loadFactor;
@@ -34,18 +34,18 @@ public class HashTable {
     }
 
     private void checkFullness() {
-        if(data.length * loadFactor < size) {
+        if (data.length * loadFactor < size) {
             resize(RESIZE_MULTIPLY);
         }
-        if(data.length * CLEAN_FACTOR < realSize && CLEAN_FACTOR > loadFactor) {
+        if (data.length * CLEAN_FACTOR < realSize && CLEAN_FACTOR > loadFactor) {
             resize(1);
         }
     }
 
     Object put(Object key, Object value) {
         int hash = getHash(key);
-        while(data[hash] != null) {
-            if(key.equals(data[hash].key)) {
+        while (data[hash] != null) {
+            if (key.equals(data[hash].key)) {
                 Object tmp = data[hash].value;
                 data[hash].value = value;
                 return tmp;
@@ -65,8 +65,8 @@ public class HashTable {
 
     Object get(Object key) {
         int hash = getHash(key);
-        while(data[hash] != null) {
-            if(key.equals(data[hash].key)) {
+        while (data[hash] != null) {
+            if (key.equals(data[hash].key)) {
                 return data[hash].value;
             }
 
@@ -78,8 +78,8 @@ public class HashTable {
 
     Object remove(Object key) {
         int hash = getHash(key);
-        while(data[hash] != null) {
-            if(key.equals(data[hash].key)) {
+        while (data[hash] != null) {
+            if (key.equals(data[hash].key)) {
                 Object tmp = data[hash].value;
                 data[hash] = DELETED;
                 size--;
@@ -98,7 +98,7 @@ public class HashTable {
 
     private int getHash(Object key) {
         int hash = key.hashCode() % data.length;
-        if(hash < 0) {
+        if (hash < 0) {
             hash += data.length;
         }
         return hash;
@@ -110,8 +110,8 @@ public class HashTable {
         size = 0;
         realSize = 0;
 
-        for(Entry entry : oldData) {
-            if(entry != null  && entry.key != null && entry.value != null) {
+        for (Entry entry : oldData) {
+            if (entry != null && entry.key != null && entry.value != null) {
                 put(entry.key, entry.value);
             }
         }
