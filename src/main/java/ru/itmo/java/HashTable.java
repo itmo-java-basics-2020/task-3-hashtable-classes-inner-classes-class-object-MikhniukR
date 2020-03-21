@@ -36,9 +36,6 @@ public class HashTable {
         if (data.length * loadFactor < size) {
             resize(RESIZE_MULTIPLY);
         }
-        if (data.length * CLEAN_FACTOR < realSize && CLEAN_FACTOR > loadFactor) {
-            resize(1);
-        }
     }
 
     private int find(Object key) {
