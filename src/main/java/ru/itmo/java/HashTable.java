@@ -6,7 +6,7 @@ public class HashTable {
     private static final int INITIAL_SIZE = 1024;
     private static final int RESIZE_MULTIPLY = 2;
     private static final int MAX_INITIAL_SIZE = 1_000_000;
-    private static final int STEP = 1009;
+    private static final int STEP = 1;
     private static final Entry DELETED = new Entry(null, null);
 
     private final float loadFactor;
