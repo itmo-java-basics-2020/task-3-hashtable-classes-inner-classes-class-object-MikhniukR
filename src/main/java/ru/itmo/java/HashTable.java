@@ -5,7 +5,6 @@ public class HashTable {
     private static final float CLEAN_FACTOR = 0.8f;
     private static final int INITIAL_SIZE = 1024;
     private static final int RESIZE_MULTIPLY = 2;
-    private static final int MAX_INITIAL_SIZE = 1_000_000;
     private static final int STEP = 1;
     private static final Entry DELETED = new Entry(null, null);
 
@@ -15,8 +14,8 @@ public class HashTable {
     private int realSize = 0;
 
     HashTable(int initialSize, float loadFactor) {
-        if (initialSize <= 0 || initialSize > MAX_INITIAL_SIZE) {
-            throw new IllegalArgumentException("Initial size should be 0 < initialSize < " + MAX_INITIAL_SIZE);
+        if (initialSize <= 0) {
+            throw new IllegalArgumentException("Initial size should be 0 < initialSize.");
         }
         if (loadFactor <= 0 || loadFactor > 1) {
             throw new IllegalArgumentException("Load factor should be 0 < loadFactor <= 1");
@@ -42,54 +41,55 @@ public class HashTable {
         }
     }
 
-    Object put(Object key, Object value) {
+    private int find(Object key) {
         int hash = getHash(key);
         while (data[hash] != null) {
             if (key.equals(data[hash].key)) {
-                Object tmp = data[hash].value;
-                data[hash].value = value;
-                return tmp;
+                return hash;
             }
 
             hash = nextHash(hash);
         }
 
-        data[hash] = new Entry(key, value);
-        realSize++;
-        size++;
+        return hash;
+    }
 
-        checkFullness();
+    Object put(Object key, Object value) {
+        int hash = find(key);
+        if (data[hash] == null) {
+            data[hash] = new Entry(key, value);
+            realSize++;
+            size++;
 
-        return null;
+            checkFullness();
+
+            return null;
+        }
+
+        Object tmp = data[hash].value;
+        data[hash].value = value;
+        return tmp;
     }
 
     Object get(Object key) {
-        int hash = getHash(key);
-        while (data[hash] != null) {
-            if (key.equals(data[hash].key)) {
-                return data[hash].value;
-            }
-
-            hash = nextHash(hash);
+        int hash = find(key);
+        if (data[hash] == null) {
+            return null;
         }
 
-        return null;
+        return data[hash].value;
     }
 
     Object remove(Object key) {
-        int hash = getHash(key);
-        while (data[hash] != null) {
-            if (key.equals(data[hash].key)) {
-                Object tmp = data[hash].value;
-                data[hash] = DELETED;
-                size--;
-                return tmp;
-            }
-
-            hash = nextHash(hash);
+        int hash = find(key);
+        if (data[hash] == null) {
+            return null;
         }
 
-        return null;
+        Object tmp = data[hash].value;
+        data[hash] = DELETED;
+        size--;
+        return tmp;
     }
 
     int size() {
