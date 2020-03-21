@@ -42,22 +42,22 @@ public class HashTable {
     }
 
     private int find(Object key) {
-        int hash = getHash(key);
-        while (data[hash] != null) {
-            if (key.equals(data[hash].key)) {
-                return hash;
+        int index = getHash(key);
+        while (data[index] != null) {
+            if (key.equals(data[index].key)) {
+                return index;
             }
 
-            hash = nextHash(hash);
+            index = nextHash(index);
         }
 
-        return hash;
+        return index;
     }
 
     Object put(Object key, Object value) {
-        int hash = find(key);
-        if (data[hash] == null) {
-            data[hash] = new Entry(key, value);
+        int index = find(key);
+        if (data[index] == null) {
+            data[index] = new Entry(key, value);
             realSize++;
             size++;
 
@@ -66,28 +66,28 @@ public class HashTable {
             return null;
         }
 
-        Object tmp = data[hash].value;
-        data[hash].value = value;
+        Object tmp = data[index].value;
+        data[index].value = value;
         return tmp;
     }
 
     Object get(Object key) {
-        int hash = find(key);
-        if (data[hash] == null) {
+        int index = find(key);
+        if (data[index] == null) {
             return null;
         }
 
-        return data[hash].value;
+        return data[index].value;
     }
 
     Object remove(Object key) {
-        int hash = find(key);
-        if (data[hash] == null) {
+        int index = find(key);
+        if (data[index] == null) {
             return null;
         }
 
-        Object tmp = data[hash].value;
-        data[hash] = DELETED;
+        Object tmp = data[index].value;
+        data[index] = DELETED;
         size--;
         return tmp;
     }
