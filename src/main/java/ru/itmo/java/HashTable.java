@@ -5,7 +5,7 @@ public class HashTable {
     private static final float CLEAN_FACTOR = 0.8f;
     private static final int INITIAL_SIZE = 1024;
     private static final int RESIZE_MULTIPLY = 2;
-    private static final int STEP = 1;
+    private static final int STEP = 123457;
     private static final Entry DELETED = new Entry(null, null);
 
     private final float loadFactor;
