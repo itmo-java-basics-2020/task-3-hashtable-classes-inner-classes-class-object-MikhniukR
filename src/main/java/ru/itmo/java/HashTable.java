@@ -13,7 +13,15 @@ public class HashTable {
     private int size = 0;
     private int realSize = 0;
 
-    HashTable(int initialSize, float loadFactor) {
+    public HashTable() {
+        this(INITIAL_SIZE, LOAD_FACTOR);
+    }
+
+    public HashTable(int initialSize) {
+        this(initialSize, LOAD_FACTOR);
+    }
+
+    public HashTable(int initialSize, float loadFactor) {
         if (initialSize <= 0) {
             throw new IllegalArgumentException("Initial size should be 0 < initialSize.");
         }
@@ -24,37 +32,7 @@ public class HashTable {
         data = new Entry[initialSize];
     }
 
-    HashTable(int initialSize) {
-        this(initialSize, LOAD_FACTOR);
-    }
-
-    HashTable() {
-        this(INITIAL_SIZE, LOAD_FACTOR);
-    }
-
-    private void checkFullness() {
-        if (data.length * loadFactor < size) {
-            resize(RESIZE_MULTIPLY);
-        }
-        if (data.length * CLEAN_FACTOR < realSize && CLEAN_FACTOR > loadFactor) {
-            resize(1);
-        }
-    }
-
-    private int find(Object key) {
-        int index = getHash(key);
-        while (data[index] != null) {
-            if (key.equals(data[index].key)) {
-                return index;
-            }
-
-            index = nextHash(index);
-        }
-
-        return index;
-    }
-
-    Object put(Object key, Object value) {
+    public Object put(Object key, Object value) {
         int index = find(key);
         if (data[index] == null) {
             data[index] = new Entry(key, value);
@@ -71,7 +49,7 @@ public class HashTable {
         return tmp;
     }
 
-    Object get(Object key) {
+    public Object get(Object key) {
         int index = find(key);
         if (data[index] == null) {
             return null;
@@ -80,7 +58,7 @@ public class HashTable {
         return data[index].value;
     }
 
-    Object remove(Object key) {
+    public Object remove(Object key) {
         int index = find(key);
         if (data[index] == null) {
             return null;
@@ -92,11 +70,34 @@ public class HashTable {
         return tmp;
     }
 
-    int size() {
+    public int size() {
         return size;
     }
 
-    private int getHash(Object key) {
+    private void checkFullness() {
+        if (data.length * loadFactor < size) {
+            resize(RESIZE_MULTIPLY);
+        }
+        if (data.length * CLEAN_FACTOR < realSize && CLEAN_FACTOR > loadFactor) {
+            resize(1);
+        }
+    }
+
+    private int find(Object key) {
+        int index = getIndex(key);
+        while (data[index] != null) {
+            if (key.equals(data[index].key)) {
+                return index;
+            }
+
+            index = nextHash(index);
+        }
+
+        return index;
+    }
+
+
+    private int getIndex(Object key) {
         int hash = key.hashCode() % data.length;
         if (hash < 0) {
             hash += data.length;
